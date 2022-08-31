@@ -304,9 +304,6 @@ class GraphQl:
             json={'query': query, 'variables': variables}
         )
 
-        response = response.json()
-        print(f"Query result: {response}")
-
         return response
 
 
@@ -385,6 +382,9 @@ for b in range(batches):
       if response.status_code != 200 or response.json().get("errors"):
         print("Create Error: {}".format(response))
         print("CreateErrData: {},{},{},{}".format(grant[0], grant[1], grant[2], grant[3]))
+        continue
+
+      response = response.json()
 
       grant_id = response.get('data').get('createGrant1').get('turbot').get('id')
       if grant_id:
@@ -393,6 +393,6 @@ for b in range(batches):
         if response.status_code != 200 or response.json().get("errors"):
           print(f"Activate Error: {response}")
           print("ActvateErrData: GrantId:{} ResourceId:{}".format(grant_id, grant[0]))
-          
+
   print(f"Pausing Execution for {wait} seconds")
   time.sleep(wait)
