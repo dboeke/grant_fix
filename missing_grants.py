@@ -304,10 +304,6 @@ class GraphQl:
             json={'query': query, 'variables': variables}
         )
 
-        if response.status_code != 200 or response.json().get("errors"):
-            print("GraphQL query failed, throwing exception")
-            raise GraphQlException(f"Query failed: {response.text}")
-
         response = response.json()
         print(f"Query result: {response}")
 
@@ -384,19 +380,19 @@ for b in range(batches):
       print(f"Starting record: {i}")
       grant = grant_list[i]
       create_grant_vars = get_create_grant_variables(grant[0], grant[1], grant[2], grant[3])
-      try:
-        response = graph_ql.run_query(create_grant_mutation, create_grant_vars)
-      except:
-        print(f"Create Error: {response}")
+      response = graph_ql.run_query(create_grant_mutation, create_grant_vars)
+
+      if response.status_code != 200 or response.json().get("errors"):
+        print("Create Error: {}".format(response))
         print("CreateErrData: {},{},{},{}".format(grant[0], grant[1], grant[2], grant[3]))
 
       grant_id = response.get('data').get('createGrant1').get('turbot').get('id')
       if grant_id:
         activate_grant_vars = get_activate_grant_variables(grant_id, grant[0])
-        try: 
-          response = graph_ql.run_query(activate_grant_mutation, activate_grant_vars)
-        except:
+        response = graph_ql.run_query(activate_grant_mutation, activate_grant_vars)
+        if response.status_code != 200 or response.json().get("errors"):
           print(f"Activate Error: {response}")
           print("ActvateErrData: GrantId:{} ResourceId:{}".format(grant_id, grant[0]))
+          
   print(f"Pausing Execution for {wait} seconds")
   time.sleep(wait)
