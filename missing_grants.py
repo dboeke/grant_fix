@@ -380,7 +380,7 @@ for b in range(batches):
       response = graph_ql.run_query(create_grant_mutation, create_grant_vars)
 
       if response.status_code != 200 or response.json().get("errors"):
-        print("Create Error: {}".format(response))
+        print("Create Error: {}".format(response.text))
         print("CreateErrData: {},{},{},{}".format(grant[0], grant[1], grant[2], grant[3]))
         continue
 
@@ -391,7 +391,7 @@ for b in range(batches):
         activate_grant_vars = get_activate_grant_variables(grant_id, grant[0])
         response = graph_ql.run_query(activate_grant_mutation, activate_grant_vars)
         if response.status_code != 200 or response.json().get("errors"):
-          print(f"Activate Error: {response}")
+          print("Activate Error: {}".format(response.text))
           print("ActvateErrData: GrantId:{} ResourceId:{}".format(grant_id, grant[0]))
 
   print(f"Pausing Execution for {wait} seconds")
