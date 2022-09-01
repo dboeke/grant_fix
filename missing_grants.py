@@ -8332,14 +8332,14 @@ create_grant_mutation = get_create_grant_mutation()
 activate_grant_mutation = get_activate_grant_mutation()
 
 max = len(grant_list)
-start = 4831
+start_location = 4831
 batch_size = 50
 batches = 166
 wait = 30
 
 for b in range(batches):
   print(f"Starting Batch {b}")
-  start = b * batch_size
+  start = start_location + (b * batch_size)
   end = start + batch_size
   if start < max:
     if end > max:
