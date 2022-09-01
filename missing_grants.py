@@ -119,18 +119,21 @@ create_grant_mutation = get_create_grant_mutation()
 activate_grant_mutation = get_activate_grant_mutation()
 
 max = len(grant_list)
-start_location = 7960 
-batch_size = 50
-batches = 10
+start_location = 0
+batch_size = 10
+batches = 1
 wait = 20
 
 for b in range(batches):
   print(f"Starting Batch {b}")
   start = start_location + (b * batch_size)
   end = start + batch_size
+  print (f"{start} < {max}?")
   if start < max:
+    print (f"{end} > {max}?")
     if end > max:
       end = max
+    print (f"{start},{end}")
     for i in range(start,end):
       print(f"Starting record: {i}")
       grant = grant_list[i]
